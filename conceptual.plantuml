@@ -1,0 +1,36 @@
+@startuml scheme
+entity user {
+  * id
+  * username
+  * password
+  * created_at
+}
+
+entity gallery {
+  * id
+  * name
+  * description
+  * created_at
+}
+
+entity image {
+  * id
+  * reference
+  * description
+  * created_at
+}
+
+entity comment{
+  * id
+  * title
+  * content
+  * created_at
+}
+
+
+user    --|{ gallery
+user    --|{ comment
+gallery --|{ image
+image   --|{ comment
+
+@enduml
