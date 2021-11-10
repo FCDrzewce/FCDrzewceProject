@@ -33,10 +33,12 @@ CREATE TABLE `comment` (
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `title` text NOT NULL,
   `content` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-  FOREIGN KEY ('image_id') REFERENCES image ('id')
-  FOREIGN KEY ('user_id') REFERENCES user ('id')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (id),
+  FOREIGN KEY (image_id) REFERENCES image(id),
+  FOREIGN KEY (user_id) REFERENCES user(id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+
 
 -- --------------------------------------------------------
 
@@ -49,8 +51,9 @@ CREATE TABLE `gallery` (
   `user_id` bigint(11) UNSIGNED NOT NULL,
   `name` text NOT NULL,
   `description` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-  FOREIGN KEY ('user_id') REFERENCES user ('id')
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES user (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -64,8 +67,9 @@ CREATE TABLE `image` (
   `gallery_id` bigint(20) UNSIGNED NOT NULL,
   `reference` text NOT NULL,
   `description` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-  FOREIGN KEY ('gallery_id') REFERENCES gallery ('id')
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (id),
+  FOREIGN KEY (gallery_id) REFERENCES gallery (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -78,36 +82,10 @@ CREATE TABLE `user` (
   `id` serial,
   `username` text NOT NULL,
   `password` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Indeksy dla zrzutów tabel
---
-
---
--- Indeksy dla tabeli `comment`
---
-ALTER TABLE `comment`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indeksy dla tabeli `gallery`
---
-ALTER TABLE `gallery`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indeksy dla tabeli `image`
---
-ALTER TABLE `image`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indeksy dla tabeli `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT dla zrzuconych tabel
