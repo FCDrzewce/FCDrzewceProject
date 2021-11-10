@@ -28,12 +28,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `comment` (
-  `id` int(11) NOT NULL,
+  `id` serial,
   `image_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `title` text NOT NULL,
   `content` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  FOREIGN KEY ('image_id') REFERENCES image ('id')
+  FOREIGN KEY ('user_id') REFERENCES user ('id')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -43,11 +45,12 @@ CREATE TABLE `comment` (
 --
 
 CREATE TABLE `gallery` (
-  `id` int(11) NOT NULL,
+  `id` serial,
   `user_id` bigint(11) UNSIGNED NOT NULL,
   `name` text NOT NULL,
   `description` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  FOREIGN KEY ('user_id') REFERENCES user ('id')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -57,11 +60,12 @@ CREATE TABLE `gallery` (
 --
 
 CREATE TABLE `image` (
-  `id` int(11) NOT NULL,
+  `id` serial,
   `gallery_id` bigint(20) UNSIGNED NOT NULL,
   `reference` text NOT NULL,
   `description` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  FOREIGN KEY ('gallery_id') REFERENCES gallery ('id')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -71,7 +75,7 @@ CREATE TABLE `image` (
 --
 
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
+  `id` serial,
   `username` text NOT NULL,
   `password` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -113,25 +117,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT dla tabeli `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` serial AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT dla tabeli `gallery`
 --
 ALTER TABLE `gallery`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` serial AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT dla tabeli `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` serial AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT dla tabeli `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` serial AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
