@@ -1,0 +1,407 @@
+{
+	"info": {
+		"_postman_id": "768a891e-32bf-46ef-8a0c-1c5f4b9cfe28",
+		"name": "FCDrzewce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/gallery",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{base_url}}/gallery?page=1&size=20",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"gallery"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/gallery_id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{base_url}}/gallery/{gallery_id}",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"gallery",
+						"{gallery_id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dodanie albumu idk",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"gallery_name\" : \"text\",\r\n    \"gallery_description\": \"text\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{base_url}}/gallery/add",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"gallery",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dodanie zdjeca do albumu",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"iamge_reference\": \"reference\",\r\n    \"image_name\": \"image1\",\r\n    \"image_description\": \"image description 1\",\r\n    \"image_content\": \"base64_form\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{base_url}}/gallery/{gallery_id}/image/add",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"gallery",
+						"{gallery_id}",
+						"image",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edycja albumu na podstawie id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://{{base_url}}/gallery/{gallery_id}",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"gallery",
+						"{gallery_id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuniecie albumu na podstawie id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://{{base_url}}/gallery/{gallery_id}/delete",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"gallery",
+						"{gallery_id}",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pobranie listy zdjec w albumie",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{base_url}}/gallery/{gallery_id}/image/?page=1&size=20",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"gallery",
+						"{gallery_id}",
+						"image",
+						""
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pobranie listy komentarzy danego zdjecia",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{base_url}}/image/{image_id}/comment?page=1&size=20",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"image",
+						"{image_id}",
+						"comment"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pobranie pojedynczego zdjecia na podstawie id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{base_url}}/image/{image_id}",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"image",
+						"{image_id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edycja zdjecia na podstawie id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://{{base_url}}/image/{image_id}",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"image",
+						"{image_id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "usuniecie zdjecia na podstawie id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://{{base_url}}/image/{image_id}",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"image",
+						"{image_id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dodanie komentarza do zdjecia",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"tytul\",\r\n    \"content\": \"tresc\",\r\n    \"created_at\": \"data\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{base_url}}/image/{image_id}/comment/add",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"image",
+						"{image_id}",
+						"comment",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pobranie pojedynczego komentarza na podstawie id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{base_url}}/comment/{comment_id}",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"comment",
+						"{comment_id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edycja komentarza na podstawie id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://{{base_url}}/comment/{comment_id}",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"comment",
+						"{comment_id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuniecie komentarza na podstawie id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://{{base_url}}/comment/{comment_id}/delete",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"comment",
+						"{comment_id}",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dodanie uzytkownika",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"name\",\r\n    \"password\" : \"pass\",\r\n    \"created_at\": \"data\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{base_url}}/user/add",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuniecie uzytkownika na  podstawie id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://{{base_url}}/user/{user_id}/delete",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"{user_id}",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
