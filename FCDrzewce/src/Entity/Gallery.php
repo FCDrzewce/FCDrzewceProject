@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(name="image")
+ * @ORM\Table(name="gallery")
  * @ApiResource(
  *     normalizationContext={"groups" = {"read"}},
  *     denormalizationContext={"groups" = {"write"}}

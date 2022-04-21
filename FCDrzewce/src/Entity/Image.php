@@ -37,6 +37,12 @@ class Image
      * @ORM\Column(type="text")
      * @Groups({"read", "write"})
      */
+    public string $path;
+
+    /**
+     * @ORM\Column(type="text")
+     * @Groups({"read", "write"})
+     */
     public string $reference;
 
     /**
@@ -92,6 +98,14 @@ class Image
     }
 
     /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
      * @param null $id
      */
     public function setId($id): void
@@ -129,6 +143,14 @@ class Image
     public function setCreatedAt(?DateTime $created_at): void
     {
         $this->created_at = $created_at;
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setPath(string $path): void
+    {
+        $this->path = $path;
     }
 
     /**

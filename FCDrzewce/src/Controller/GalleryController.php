@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GalleryController extends AbstractController
 {
-    #[Route('/image/{image_id}', name: 'image')]
+    /*#[Route('/image/{image_id}', name: 'image')]
     public function index(Request $request): Response
     {
        $greet = '';
@@ -19,5 +19,5 @@ class GalleryController extends AbstractController
         }
 
         return new Response('<p>dupa to:</p> ' . $name);
-    }
+    }*/
 }
