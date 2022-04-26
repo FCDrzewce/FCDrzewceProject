@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\image;
+use App\Entity\Image;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,19 +11,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PageController extends AbstractController
 {
-    #[Route('/image/page', name: 'ImagesPage')]
+    #[Route('/images', name: 'ImagesPagination')]
     public function getExtension(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
+        // http://localhost:8000/images?gallery_id=1&page=2&length=3
         $entityManager = $doctrine->getManager();
-        $gallery_id = $request->query->get('gallery_id');
+
+        $gallery_id = intval($request->query->get('gallery_id'));
         $page = intval($request->query->get('page'), 10);
         $length = intval($request->query->get('length'), 10);
         $offset = $page * $length - $length;
 
-
         return new JsonResponse(
             $entityManager
-                ->getRepository(image::class)
+                ->getRepository(Image::class)
                 ->findBy(criteria: ['gallery_id' => $gallery_id], limit: $length, offset: $offset)
         );
     }
