@@ -16,24 +16,44 @@ class ImageController extends AbstractController
     {
         $entityManager = $doctrine->getManager();
 
-        $file = $request->query->get('file'); // 127.0.0.1:8000/image/add?file=file.png
+        // IMG -> base64 => https://www.base64-image.de
+        // Odebranie zdjecia w base64
+        $img = $request->get('img');
+        $gallery_id = $request->get('gallery_id');
 
-        $file_ext = pathinfo($file, PATHINFO_EXTENSION);
+        // Pobranie danych niezbędnych do otrzymania rozszerzenia
+        // data:image/jpeg;base64 -> jpeg
+        $offset = strpos($img, '/') + 1;
+        $length = strpos($img, ';') - $offset;
+        $ext = substr($img, $offset, $length);
+
+        // Usunięcie z tekstu danych o pliku
+        $img = str_replace('data:image/' . $ext . ';base64,', '', $img);
+
+        // Przypisanie zmiennej $data zdekodowanego base64
+        $data = base64_decode($img);
+
+        // Wygenerowanie UUID v4
         $uuid = vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex(random_bytes(16)), 4));
 
-        $file_name = $uuid . '.' .$file_ext;
+        // Wygenerowanie nazwy pliku z UUID v4 i rozszerzeniem
+        $file_name = $uuid . '.' . $ext;
 
+        // Zapisanie pliku w katalogu images
+        file_put_contents('../images/' . $file_name, $data);
+
+        // Zainicjowanie encji Image i nadanie odpowiednich wartości
         $image = new Image();
         $image->setPath('../images/' . $file_name);
-        $image->setGalleryId(1);
+        $image->setGalleryId($gallery_id);
         $image->setReference('referencja');
         $image->setDescription('opis');
 
-        file_put_contents('../images/'.$file_name, $file_name);
-
+        // Przygotowanie zapytania i wysłanie go do bazy danych
         $entityManager->persist($image);
         $entityManager->flush($image);
 
-        return new Response('Ext: ' . $file_name);
+        // Zwrócenie w Resposne komunikatu o zapisanym zdjęciu
+        return new Response('Pomyślnie zapisano plik: ' . $file_name);
     }
 }
