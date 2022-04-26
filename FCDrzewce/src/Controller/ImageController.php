@@ -7,8 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[AsController]
 class ImageController extends AbstractController
 {
     #[Route('/image/add', name: 'addImage')]
@@ -19,7 +21,10 @@ class ImageController extends AbstractController
         // IMG -> base64 => https://www.base64-image.de
         // Odebranie zdjecia w base64
         $img = $request->get('img');
+
         $gallery_id = $request->get('gallery_id');
+        $reference = $request->get('reference');
+        $description = $request->get('description');
 
         // Pobranie danych niezbędnych do otrzymania rozszerzenia
         // data:image/jpeg;base64 -> jpeg
@@ -46,8 +51,8 @@ class ImageController extends AbstractController
         $image = new Image();
         $image->setPath('../images/' . $file_name);
         $image->setGalleryId($gallery_id);
-        $image->setReference('referencja');
-        $image->setDescription('opis');
+        $image->setReference($reference);
+        $image->setDescription($description);
 
         // Przygotowanie zapytania i wysłanie go do bazy danych
         $entityManager->persist($image);

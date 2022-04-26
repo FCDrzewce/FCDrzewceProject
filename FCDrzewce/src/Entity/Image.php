@@ -15,9 +15,22 @@ use App\Controller\ImageController;
  * @ORM\Table(name="image")
  * @ApiResource(
  *     normalizationContext={"groups" = {"read"}},
- *     denormalizationContext={"groups" = {"write"}}
+ *     denormalizationContext={"groups" = {"write"}},
  * )
  */
+#[ApiResource(itemOperations: [
+    'get',
+    'put',
+    'delete',
+    'patch',
+    'add_image' => [
+        'name' => 'Add photo',
+        'description' => 'Dodanie zdjeica',
+        'method' => 'POST',
+        'path' => '/image/add',
+        'controller' => ImageController::class,
+    ],
+])]
 class Image
 {
     /**
