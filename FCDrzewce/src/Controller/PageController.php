@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PageController extends AbstractController
 {
     #[Route('/images', name: 'ImagesPagination')]
-    public function getExtension(Request $request, ManagerRegistry $doctrine): JsonResponse
+    public function getImages(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
         // http://localhost:8000/images?gallery_id=1&page=2&length=3
         $entityManager = $doctrine->getManager();
