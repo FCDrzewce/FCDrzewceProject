@@ -13,23 +13,35 @@ use App\Controller\ImageController;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="image")
+ * @ApiResource(
+ *   normalizationContext={"groups" = {"read"}},
+ *   denormalizationContext={"groups" = {"write"}},
+ *   itemOperations={
+ *     "get",
+ *     "patch",
+ *     "delete",
+ *     "put",
+ *     "add_image" = {
+ *       "method" = "POST",
+ *       "path" = "/images/add",
+ *       "controller" = ImageController::class,
+ *       "read"=false,
+ *     },
+ *   }
+ * )
  */
 
-#[ApiResource(
-    itemOperations: [
-        'get',
-        'add_image' => [
-            'name' => 'Add photo',
-            'description' => 'Dodanie zdjecia',
-            'method' => 'POST',
-            'path' => '/image/add',
-            'controller' => ImageController::class,
-        ],
-    ],
+/*#[ApiResource(
+    itemOperations: ['add_image' => [
+        'method' => 'POST',
+        'path' => '/images/add',
+        'controller' => ImageController::class,
+        'read' => false
+    ]],
     denormalizationContext: ['groups' => ['write']],
     formats: ["json"],
     normalizationContext: ['groups' => ['read']]
-)]
+)]*/
 class Image
 {
     /**
