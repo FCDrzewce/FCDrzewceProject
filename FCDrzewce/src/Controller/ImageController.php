@@ -3,26 +3,50 @@
 namespace App\Controller;
 
 use App\Entity\Image;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[AsController]
 class ImageController extends AbstractController
 {
-    public function getExtension($base64)
+    public const FILES_PATH = '../images/';
+
+    private EntityManagerInterface $entityManager;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    public function getExtension($base64): string
     {
         // Pobranie danych niezbędnych do otrzymania rozszerzenia
         // data:image/jpeg;base64 -> jpeg
-        $offset = strpos($base64, '/') + 1;
-        $length = strpos($base64, ';') - $offset;
-        return substr($base64, $offset, $length);
+        if (str_contains($base64, 'data:image')) {
+            $offset = strpos($base64, '/') + 1;
+            $length = strpos($base64, ';') - $offset;
+            return substr($base64, $offset, $length);
+        } else {
+            $baseExt = substr($base64, 0, 1);
+            return match ($baseExt) {
+                '/' => 'jpg',
+                'i' => 'png',
+                'R' => 'gif',
+                'U' => 'webp',
+                default => '',
+            };
+        }
     }
 
-    public function generateFileName($ext)
+    public function generateFileName($ext): string
     {
         // Wygenerowanie UUID v4
         $uuid = vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex(random_bytes(16)), 4));
@@ -30,7 +54,7 @@ class ImageController extends AbstractController
         return $uuid . '.' . $ext;
     }
 
-    public function renderImageFromBase($base64, $ext)
+    public function renderImageFromBase($base64, $ext): string
     {
         // Usunięcie z tekstu danych o pliku
         $base64 = str_replace('data:image/' . $ext . ';base64,', '', $base64);
@@ -41,11 +65,24 @@ class ImageController extends AbstractController
     public function saveImage($file_name, $image)
     {
         // Zapisanie pliku w katalogu images
-        file_put_contents('../images/' . $file_name, $image);
+        file_put_contents(self::FILES_PATH . $file_name, $image);
+    }
+
+    public function saveImageToDatabase($file_name, $gallery_id, $reference, $description) {
+        // Zainicjowanie encji Image i nadanie odpowiednich wartości
+        $image = new Image();
+        $image->setPath(self::FILES_PATH . $file_name);
+        $image->setGalleryId($gallery_id);
+        $image->setReference($reference);
+        $image->setDescription($description);
+
+        // // Przygotowanie zapytania i wysłanie go do bazy danych
+        $this->entityManager->persist($image);
+        $this->entityManager->flush($image);
     }
 
     #[Route('/image/add', name: 'addImage')]
-    public function addImage(Request $request, ManagerRegistry $doctrine): Response
+    public function addImage(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
         $entityManager = $doctrine->getManager();
 
@@ -63,17 +100,16 @@ class ImageController extends AbstractController
         $this->saveImage($file_name, $image);
 
         // Zainicjowanie encji Image i nadanie odpowiednich wartości
-         $image = new Image();
-         $image->setPath('../images/' . $file_name);
-         $image->setGalleryId($gallery_id);
-         $image->setReference($reference);
-         $image->setDescription($description);
+        $image = new Image();
+        $image->setPath(self::FILES_PATH . $file_name);
+        $image->setGalleryId($gallery_id);
+        $image->setReference($reference);
+        $image->setDescription($description);
 
-        // // Przygotowanie zapytania i wysłanie go do bazy danych
-         $entityManager->persist($image);
-         $entityManager->flush($image);
+        // Przygotowanie zapytania i wysłanie go do bazy danych
+        $this->saveImageToDatabase($file_name, $gallery_id, $reference, $description);
 
-        // Zwrócenie w Resposne komunikatu o zapisanym zdjęciu
-        return new Response('Pomyślnie zapisano plik: ' . $file_name);
+        // Zwrócenie w JsonResposne danych o zapisanym zdjęciu
+        return new JsonResponse(array('gallery_id' => $gallery_id, 'reference' => $reference, 'description' => $description, 'path' => self::FILES_PATH.$file_name));
     }
 }
