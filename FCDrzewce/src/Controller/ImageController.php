@@ -84,8 +84,6 @@ class ImageController extends AbstractController
     #[Route('/image/add', name: 'addImage')]
     public function addImage(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
-        $entityManager = $doctrine->getManager();
-
         // IMG -> base64 => https://www.base64-image.de
         // Odebranie zdjecia w base64
         $img = $request->get('img');
